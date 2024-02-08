@@ -20,7 +20,7 @@ validateMovieRequestBody = async (req, res, next) => {
     }
     //Checking for the correct value of status
     const releaseStatus = req.body.releaseStatus;
-    const releaseStatusTypes = [constants.releaseStatus.unrealeased, constants.releaseStatus.released, constants.releaseStatus.blocked];
+    const releaseStatusTypes = [constants.releaseStatus.unreleased, constants.releaseStatus.released, constants.releaseStatus.blocked];
     if (!releaseStatusTypes.includes(releaseStatus)) {
         return res.status(400).send({
             message: "Movie release status provided is invalid. Possible values UNRELEASED | RELEASED | BLOCKED "

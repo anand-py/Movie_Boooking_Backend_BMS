@@ -161,6 +161,7 @@ await Theatre.create({
  * Importing the routes
  */
 require('./routes/movie.routes')(app);
+require('./routes/theater.routes')(app)
 /**
  * Start the Server
  */

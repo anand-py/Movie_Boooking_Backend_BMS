@@ -10,6 +10,7 @@ const dbConfig = require('./configs/db.config')
 // Import models 
 const Movie = require('./models/movie.models')
 const Theatre = require('./models/theater.models')
+const User = require('./models/user.models')
 
 // Create an instance of the express application
 const app = express()
@@ -155,6 +156,25 @@ await Theatre.create({
     }catch (err) {
         console.error(err.message);
     }
+    /**
+     * Creating one ADMIN user at the server boot time
+     */
+    await User.collection.drop();
+    try {
+
+       user = await User.create({
+           name: "Admin",
+           userId: "1", // It should be atleat 16, else will throw error
+           email: "admin@gmail.com",  // If we don't pass this, it will throw the error
+           userType: "ADMIN",
+           password :bcrypt.hashSync("admin", 8) //this field should be hidden from the end user
+
+       });
+       console.log("ADMIN user created");
+
+   } catch (err) {
+       console.log(err.message);
+   }
 }
 
 /**
@@ -162,6 +182,7 @@ await Theatre.create({
  */
 require('./routes/movie.routes')(app);
 require('./routes/theater.routes')(app)
+require('./routes/auth.routes')(app)
 /**
  * Start the Server
  */

@@ -1,5 +1,5 @@
 const authController = require('../controllers/auth.controller');
-const { verifyUserReqBody } = require("../middlewares");
+const verifyUserReqBody  = require("../middlewares/verifyUserRequestBody");
 
 module.exports = function (app) {
 

@@ -1,5 +1,5 @@
 const userController = require('../controllers/user.controller');
-const verifyUserReqBody = require("../middlewares/");
+const verifyUserReqBody = require("../middlewares/verifyUserRequestBody");
 const authJwt = require('../middlewares/authJwt')
 
 

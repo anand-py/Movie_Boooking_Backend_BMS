@@ -1,25 +1,23 @@
 // Import required modules
-const express = require('express')
+const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const bcrypt = require("bcryptjs");
 
 // Import configuration files
-const serverConfig = require('./configs/server.config')
-const dbConfig = require('./configs/db.config')
+const serverConfig = require('./configs/server.config');
+const dbConfig = require('./configs/db.config');
 
 // Import models 
-const Movie = require('./models/movie.models')
-const Theatre = require('./models/theater.models')
-const User = require('./models/user.models')
+const Movie = require('./models/movie.models');
+const Theatre = require('./models/theater.models');
+const User = require('./models/user.models');
 
 // Create an instance of the express application
-const app = express()
+const app = express();
 
 // Middleware to parse JSON bodies
-app.use(bodyParser.json({}));
-
-// Middleware to parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // Used to parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Used to parse URL-encoded bodies
 
 
 /**
@@ -181,8 +179,9 @@ await Theatre.create({
  * Importing the routes
  */
 require('./routes/movie.routes')(app);
-require('./routes/theater.routes')(app)
+require('./routes/theatre.routes')(app)
 require('./routes/auth.routes')(app)
+require('./routes/user.routes')(app)
 /**
  * Start the Server
  */

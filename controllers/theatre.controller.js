@@ -1,6 +1,7 @@
 const { response } = require('express');
 const Theatre = require('../models/theater.models')
-const Movie = require('../models/movie.models')
+const Movie = require('../models/movie.models');
+const constants = require('../utils/constants');
 
 exports.getAllTheatre = async(req,res)=>{
     const queryObj = {}
@@ -52,6 +53,12 @@ exports.createTheatre = async(req,res)=>{
         pinCode: req.body.pinCode
 
     }
+    // Check if the user is an admin before allowing the update
+    if (!req.user || req.user.role !== constants.userTypes.admin ) {
+        return res.status(403).send({
+            message: "Unauthorized. Only admins can update theatres."
+        });
+    }
 
     const theatre = await Theatre.create(theatreObject);
     res.status(201).send(theatre);
@@ -71,6 +78,12 @@ exports.updateTheatre = async(req,res)=>{
                 message: "Theatre not found"
             });
         }
+              // Check if the user is an admin before allowing the update
+              if (!req.user || req.user.role !== constants.userTypes.admin ) {
+                return res.status(403).send({
+                    message: "Unauthorized. Only admins can update theatres."
+                });
+            }
         savedTheatre.name = req.body.name !== undefined ? req.body.name : savedTheatre.name;
         savedTheatre.city = req.body.city !== undefined ? req.body.city : savedTheatre.city;
         savedTheatre.description = req.body.description !== undefined ? req.body.description : savedTheatre.description;

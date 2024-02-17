@@ -1,15 +1,15 @@
 const movieController = require('../controllers/movie.controller')
-// const express = require("express");
-// const router = express.Router();
-const { verifyMovieReqBody } = require('../middlewares')
+const authJwt = require('../middlewares/authJwt')
+const verifyMovieReqBody = require('../middlewares/verifyMovieRequestBody')
 
-// router.get('/mba/api/v1/movies', movieController.getAllMovies)
+
+
+
 module.exports = (app)=>{
-    app.get('/mba/api/v1/movies', movieController.getAllMovies);
-    app.get('/mba/api/v1/movies/:id', movieController.getMovie);
-    app.post('/mba/api/v1/movies/', verifyMovieReqBody.validateMovieRequestBody , movieController.createMovie);
-    app.put('/mba/api/v1/movies/:id', verifyMovieReqBody.validateMovieRequestBody , movieController.updateMovie)
-    app.delete('/mba/api/v1/movies/:id', movieController.deleteMovie)
+    app.get('/mba/api/v1/movies', [authJwt.verifyToken], movieController.getAllMovies);
+    app.get('/mba/api/v1/movies/:id',[authJwt.verifyToken], movieController.getMovie);
+    app.post('/mba/api/v1/movies/', [authJwt.verifyToken, authJwt.isAdmin ,verifyMovieReqBody.validateMovieRequestBody] , movieController.createMovie);
+    app.put('/mba/api/v1/movies/:id', [authJwt.verifyToken, authJwt.isAdmin, verifyMovieReqBody.validateMovieRequestBody] , movieController.updateMovie)
+    app.delete('/mba/api/v1/movies/:id',[authJwt.verifyToken, authJwt.isAdmin], movieController.deleteMovie)
 }
 
-// module.exports = router;

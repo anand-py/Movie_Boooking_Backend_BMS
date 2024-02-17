@@ -1,15 +1,15 @@
 const User = require('../models/user.models')
 const constants = require('../utils/constants')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const config = require('../configs/auth.config')
 
-exports.signup = async(req,res)=>{
+exports.signup = async (req, res) => {
     /**
      * Inside the sign up call
      */
-    var userStatus = req.body.userStatus;
-    if(!req.body.userStatus){
+    var userStatus = req.body.userSatus;
+    if(!req.body.userSatus){
        if(!req.body.userType || req.body.userType==constants.userTypes.customer){
         userStatus = constants.userStatus.approved;
        }else{
@@ -38,16 +38,16 @@ exports.signup = async(req,res)=>{
             updatedAt : userCreated.updatedAt
         }
         res.status(201).send(postResponse);
-    } catch(err){
+    } catch (err) {
+        console.err("Some error while saving the user in db", err.message);
         res.status(500).send({
-            message : 'Some internal Server Erorr',
-            err : err.message
+            message: "Some internal error while inserting the element"
         })
     }
 
 }
-
 exports.signin = async(req,res)=>{
+
     const user = await User.findOne({userId : req.body.userId});
     try{
         if(user == null){
@@ -58,8 +58,8 @@ exports.signin = async(req,res)=>{
         }
         if(user.userStatus != 'APPROVED'){
             res.status(200).send({
-                messgae : `can't allow`
-            })
+                message: `can't allow` // Corrected typo
+            });
         }
         //Checkig if the password matches
     var passwordIsValid = bcrypt.compareSync(

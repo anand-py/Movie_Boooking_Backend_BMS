@@ -24,14 +24,37 @@ app.use(express.urlencoded({ extended: true })); // Used to parse URL-encoded bo
 /**
  * DB Connection initialization
  */
-mongoose.connect(dbConfig.DB_URL)
-    .then(() => {
-        console.log("Connected to Mongo DB");
-        init();
-    })
-    .catch(err => {
-        console.log("Error:", err.message);
+
+// if(process.env.NODE_ENV !== 'production'){
+//     try{
+//         mongoose.connect(dbConfig.DB_URL,
+//         {useNewUrlParser : true, useUnifiedToplogy: true}
+//         ()=>{
+//             console.log("Connected to Mongo DB");
+//             init();
+//         }
+        
+//     }catch(err){
+//         console.log("Couldnt connect with DB", err.message)
+//     }
+// }
+
+if (process.env.NODE_ENV !== 'production') {
+    const db = mongoose.connection;
+
+    db.on('error', (err) => {
+        console.error('Connection error:', err.message);
     });
+
+    db.once('open', () => {
+        console.log('Connected to Mongo DB');
+        init();
+    });
+
+    mongoose.connect(dbConfig.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+}
+
+
 
 
 /**

@@ -11,6 +11,7 @@ const dbConfig = require('./configs/db.config');
 const Movie = require('./models/movie.models');
 const Theatre = require('./models/theater.models');
 const User = require('./models/user.models');
+const Booking = require('./models/booking.models')
 
 // Create an instance of the express application
 const app = express();
@@ -182,6 +183,8 @@ require('./routes/movie.routes')(app);
 require('./routes/theatre.routes')(app)
 require('./routes/auth.routes')(app)
 require('./routes/user.routes')(app)
+require('./routes/booking.routes')(app)
+require('./routes/payment.routes')(app)
 /**
  * Start the Server
  */

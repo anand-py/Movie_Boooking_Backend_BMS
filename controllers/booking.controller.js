@@ -44,17 +44,18 @@ exports.createBooking = async(req,res)=>{
    var bookingObject = {
         theatreId : req.body.theatreId,
         movieId : req.body.movieId,
-        userId : req.body.userId,
+        userId : user._id,
         timing : req.body.timing,
         noOfSeats : req.body.noOfSeats,
-        totalCost : (req.body.totalCost+constants.ticketPrice)
+        totalCost: (req.body.noOfSeats * constants.ticketPrice)
    }
     try{
         const booking = await Booking.create(bookingObject)
         res.status(200).send(booking)
     }catch (err) {
         res.status(500).send({
-            message: "Some Internal Error Occured"
+            message: "Some Internal Error Occured",
+            err : err.message
         })
     }
 }

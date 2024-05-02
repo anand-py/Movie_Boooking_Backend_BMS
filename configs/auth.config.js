@@ -1,3 +1,4 @@
+require('dotenv').config();
 module.exports = {
-    secret : "anand-secret-key"
+    secret : process.env.SECRET
 }
